@@ -1,4 +1,4 @@
-package com.ocm.onlinecoursemanagementbackend.controllers;
+package com.ocm.onlinecoursemanagementbackend.controllers.rest;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

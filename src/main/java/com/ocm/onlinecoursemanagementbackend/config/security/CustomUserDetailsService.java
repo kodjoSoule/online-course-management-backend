@@ -1,13 +1,13 @@
 package com.ocm.onlinecoursemanagementbackend.config.security;
 
 
+
 import com.ocm.onlinecoursemanagementbackend.models.CustomUser;
 import com.ocm.onlinecoursemanagementbackend.repositories.UserRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,11 +20,12 @@ import java.util.List;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -40,12 +41,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     //create new user
 
     public void createUserIfNeeded(
-            CustomUser customUser
+            CustomUser dbUser
     ) {
         // Check if user already exists
         if (userRepository.findByUsername("admin") != null){
             // If user does not exist, create it
-            userRepository.save(customUser);
+            userRepository.save(dbUser);
         }
     }
 
@@ -66,8 +67,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
     }
 
-    public void createUtlisateur(CustomUser user){
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+    public void createUtlisateur(CustomUser utilisateur){
+        utilisateur.setPassword(passwordEncoder.encode(utilisateur.getPassword()));
+        userRepository.save(utilisateur);
     }
 }
