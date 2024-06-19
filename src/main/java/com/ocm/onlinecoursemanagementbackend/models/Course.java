@@ -21,7 +21,7 @@ public class Course {
 
     @ManyToOne
     @JoinColumn(name = "instructor_id", nullable = false)
-    private User instructor;
+    private CustomUser instructor;
 
     @ManyToMany
     @JoinTable(
@@ -29,16 +29,16 @@ public class Course {
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private Set<User> enrolledStudents = new HashSet<>();
+    private Set<CustomUser> enrolledStudents = new HashSet<>();
 
     // Constructeurs, getters et setters
 
     // Méthodes utilitaires pour les étudiants inscrits
-    public void enrollStudent(User student) {
+    public void enrollStudent(CustomUser student) {
         enrolledStudents.add(student);
     }
 
-    public void removeStudent(User student) {
+    public void removeStudent(CustomUser student) {
         enrolledStudents.remove(student);
     }
 }

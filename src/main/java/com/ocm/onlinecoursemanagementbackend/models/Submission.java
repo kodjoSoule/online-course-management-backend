@@ -20,7 +20,7 @@ public class Submission {
 
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
-    private User student;
+    private CustomUser student;
 
     // Constructeurs, getters et setters
 }
