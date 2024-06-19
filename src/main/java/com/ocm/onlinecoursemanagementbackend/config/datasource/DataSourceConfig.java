@@ -1,4 +1,4 @@
-package com.ocm.onlinecoursemanagementbackend.config;
+package com.ocm.onlinecoursemanagementbackend.config.datasource;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

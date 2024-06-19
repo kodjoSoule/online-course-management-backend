@@ -1,4 +1,4 @@
-package com.ocm.onlinecoursemanagementbackend.config;
+package com.ocm.onlinecoursemanagementbackend.config.security;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

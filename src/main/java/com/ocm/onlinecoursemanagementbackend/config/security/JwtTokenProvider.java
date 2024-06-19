@@ -1,4 +1,4 @@
-package com.ocm.onlinecoursemanagementbackend.config;
+package com.ocm.onlinecoursemanagementbackend.config.security;
 
 
 import io.jsonwebtoken.Claims;
