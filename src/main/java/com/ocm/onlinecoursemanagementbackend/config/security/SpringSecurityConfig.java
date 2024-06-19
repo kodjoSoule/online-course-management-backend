@@ -29,7 +29,7 @@ public class SpringSecurityConfig {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private static final String JWT_KEY ="357638792F423F4428472B4B6250655368566D597133743677397A2443264629";
+    private static String jwtKey ="357638792F423F4428472B4B6250655368566D597133743677397A2443264629";
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
