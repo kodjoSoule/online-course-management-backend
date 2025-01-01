@@ -8,7 +8,7 @@
         <version>3.3.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.ocm</groupId>
+    <groupId>com.kodjo</groupId>
     <artifactId>online-course-management-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>online-course-management-backend</name>

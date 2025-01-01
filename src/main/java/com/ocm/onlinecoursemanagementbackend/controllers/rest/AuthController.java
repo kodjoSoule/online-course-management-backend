@@ -1,10 +1,10 @@
 package com.ocm.onlinecoursemanagementbackend.controllers.rest;
 
 
-import com.ocm.onlinecoursemanagementbackend.config.security.CustomUserDetailsService;
-import com.ocm.onlinecoursemanagementbackend.config.security.JWTService;
 import com.ocm.onlinecoursemanagementbackend.dtos.auth.LoginRequestDTO;
 import com.ocm.onlinecoursemanagementbackend.dtos.auth.LoginResponseDTO;
+import com.ocm.onlinecoursemanagementbackend.config.security.CustomUserDetailsService;
+import com.ocm.onlinecoursemanagementbackend.config.security.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

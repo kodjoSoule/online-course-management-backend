@@ -2,8 +2,8 @@ package com.ocm.onlinecoursemanagementbackend.config.security;
 
 
 
-import com.ocm.onlinecoursemanagementbackend.models.CustomUser;
 import com.ocm.onlinecoursemanagementbackend.repositories.UserRepository;
+import com.ocm.onlinecoursemanagementbackend.models.CustomUser;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

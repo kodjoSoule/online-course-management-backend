@@ -18,8 +18,6 @@ public class JWTService {
     @Autowired
     private JwtEncoder jwtEncoder;
 
-
-
     public String generateToken(Authentication authentication) {
         Instant now = Instant.now();
         JwtClaimsSet claims = JwtClaimsSet.builder()

@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.crypto.spec.SecretKeySpec;
 
@@ -25,11 +26,18 @@ public class SpringSecurityConfig {
     private CustomUserDetailsService customUserDetailsService  ;
     @Autowired
     private CustomAccessDeniedHandler accessDeniedHandler;
+    @Autowired
+    private JwtRequestFilter jwtRequestFilter;
+
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
     private static String jwtKey ="357638792F423F4428472B4B6250655368566D597133743677397A2443264629";
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -38,27 +46,48 @@ public class SpringSecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/login").permitAll();
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
-//                    auth.requestMatchers("/user/**").hasRole("USER");
                     auth.requestMatchers("/user/**").hasAnyRole("ADMIN", "USER");
                     auth.requestMatchers("/api/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/api/user/**").hasAnyRole("ADMIN", "USER");
-                    auth.anyRequest().permitAll();
+                    auth.anyRequest().authenticated(); // Changez ceci si vous voulez une autre stratégie pour les autres requêtes
                 })
-                //use the custom login form
-                .formLogin(
-                        formLogin -> formLogin
-                                .loginPage("/login")
-                                .defaultSuccessUrl("/", true)
-                                .permitAll()
-                )
                 .logout(
                         logout -> logout
                                 .logoutUrl("/logout")
                                 .logoutSuccessUrl("/")
-                ).exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedHandler(accessDeniedHandler));
-        http.httpBasic(Customizer.withDefaults());
+                )
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .accessDeniedHandler(accessDeniedHandler)
+                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http
+//                .csrf(csrf -> csrf.disable())
+//                .authorizeHttpRequests(auth -> {
+//                    auth.requestMatchers("/api/login").permitAll();
+//                    auth.requestMatchers("/admin/**").hasRole("ADMIN");
+////                    auth.requestMatchers("/user/**").hasRole("USER");
+//                    auth.requestMatchers("/user/**").hasAnyRole("ADMIN", "USER");
+//                    auth.requestMatchers("/api/admin/**").hasRole("ADMIN");
+//                    auth.requestMatchers("/api/user/**").hasAnyRole("ADMIN", "USER");
+//                    auth.anyRequest().permitAll();
+//                })
+//
+//                .logout(
+//                        logout -> logout
+//                                .logoutUrl("/logout")
+//                                .logoutSuccessUrl("/")
+//                ).exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedHandler(accessDeniedHandler));
+//        http.httpBasic(Customizer.withDefaults());
+//        return http.build();
+//    }
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
