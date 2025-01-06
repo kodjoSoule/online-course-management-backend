@@ -2,14 +2,18 @@ package com.ocm.onlinecoursemanagementbackend.controller;
 
 import com.ocm.onlinecoursemanagementbackend.config.JwtTokenProvider;
 import com.ocm.onlinecoursemanagementbackend.model.User;
+import com.ocm.onlinecoursemanagementbackend.model.UserDTO;
+import com.ocm.onlinecoursemanagementbackend.model.UserRequest;
 import com.ocm.onlinecoursemanagementbackend.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/auth")
+@Slf4j
+@RequestMapping("/api/v1/auth")
 public class AuthController {
 
     private final UserService userService;
@@ -21,7 +25,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) {
+    public ResponseEntity<User> register(@RequestBody UserRequest user) {
+        log.info("Registering user: {}", user);
         return ResponseEntity.ok(userService.createUser(user));
     }
 

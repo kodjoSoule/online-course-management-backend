@@ -1,7 +1,7 @@
 package com.ocm.onlinecoursemanagementbackend.service;
 
 import com.ocm.onlinecoursemanagementbackend.exception.ResourceNotFoundException;
-import com.ocm.onlinecoursemanagementbackend.model.User;
+import com.ocm.onlinecoursemanagementbackend.model.*;
 import com.ocm.onlinecoursemanagementbackend.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,9 +31,61 @@ public class UserService {
     }
 
     // Créer un nouvel utilisateur
-    public User createUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+    public User createUser(UserRequest user) {
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new ResourceNotFoundException("Username already exists");
+        }
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new ResourceNotFoundException("Email already exists");
+        }
+        if (!user.getPassword().equals(user.getConfirmPassword())) {
+            throw new ResourceNotFoundException("Passwords do not match");
+        }
+        if (user.getRole() == Role.STUDENT) {
+            Student student = createStudent(user);
+            student.setPassword(passwordEncoder.encode(user.getPassword()));
+            return userRepository.save(student);
+        } else if (user.getRole() == Role.INSTRUCTOR) {
+            Instructor instructor = createInstructor(user);
+            instructor.setPassword(passwordEncoder.encode(user.getPassword()));
+            return userRepository.save(instructor);
+        } else {
+            throw new ResourceNotFoundException("Role not found");
+        }
+    }
+
+    private Instructor createInstructor(UserRequest user) {
+        Instructor instructor = new Instructor();
+//        instructor.setFirstName(user.getFirstName());
+//        instructor.setLastName(user.getLastName());
+//        instructor.setAge(user.getAge());
+//        instructor.setGender(user.getGender());
+//        instructor.setAddress(user.getAddress());
+//        instructor.setCity(user.getCity());
+//        instructor.setCountry(user.getCountry());
+//        instructor.setPhone(user.getPhone());
+//        instructor.setMobile(user.getMobile());
+        instructor.setEmail(user.getEmail());
+        instructor.setUsername(user.getUsername());
+        instructor.setRole(user.getRole());
+        return instructor;
+    }
+
+    private Student createStudent(UserRequest user) {
+        Student student = new Student();
+//        student.setFirstName(user.getFirstName());
+//        student.setLastName(user.getLastName());
+//        student.setAge(user.getAge());
+//        student.setGender(user.getGender());
+//        student.setAddress(user.getAddress());
+//        student.setCity(user.getCity());
+//        student.setCountry(user.getCountry());
+//        student.setPhone(user.getPhone());
+//        student.setMobile(user.getMobile());
+        student.setEmail(user.getEmail());
+        student.setUsername(user.getUsername());
+        student.setRole(user.getRole());
+        return student;
     }
 
     // Supprimer un utilisateur
